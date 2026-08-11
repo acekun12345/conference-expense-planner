@@ -1,37 +1,21 @@
 import React, { Component } from 'react';
-import './ContentRating.css';
 
 class ContentRating extends Component {
-  constructor() {
-    super();
-    this.state = {
-      likes: 0,
-      dislikes: 0,
-      handleLike: () => {
-        this.setState((prevState) => ({
-          likes: prevState.likes + 1
-        }));
-      },
-      handleDislike: () => {
-        this.setState((prevState) => ({
-          dislikes: prevState.dislikes + 1
-        }));
-      }
-    };
-  }
-
   render() {
     return (
-      <div className='content-rating'>
+      <div className="content-rating">
         <p>
-          React is a JavaScript library for building user interfaces.
+          React is a JavaScript library used for building interactive
+          user interfaces. It allows developers to create reusable
+          components that manage their own data and behavior. React uses
+          a component-based approach that makes applications easier to
+          organize and maintain. It is commonly used for modern websites
+          and single-page applications.
         </p>
-        <div className='rating-buttons'>
-         <button className="dislike-button" onClick={this.state.handleDislike}>
-          </button>
-          <button className="dislike-button" onClick={this.state.handleDislike}>
-            Dislike ({this.state.dislikes})
-          </button>
+
+        <div className="rating-buttons">
+          <button>Like (0)</button>
+          <button>Dislike (0)</button>
         </div>
       </div>
     );
