@@ -1,8 +1,11 @@
-import ContentRating from './ContentRating';
+import React from 'react';
+import TodoList from './Components/TodoList';
 
 function App() {
   return (
-    <ContentRating />
+    <div>
+      <TodoList />
+    </div>
   );
 }
 
