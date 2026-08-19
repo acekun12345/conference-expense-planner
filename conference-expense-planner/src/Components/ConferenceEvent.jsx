@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { incrementQuantity, decrementQuantity } from '../redux/venueSlice';
 import { incrementAvQuantity, decrementAvQuantity } from '../redux/addonsSlice';
 import { toggleMealSelection } from '../redux/mealsSlice';
+import TotalCost from './TotalCost';
 import './ConferenceEvent.css';
 
 const ConferenceEvent = () => {
@@ -21,6 +22,45 @@ const ConferenceEvent = () => {
     0
   );
   const grandTotal = venueTotal + addonTotal + mealsTotal;
+
+  const ItemsDisplay = () => (
+    <table className="summary-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Unit Cost</th>
+          <th>Quantity</th>
+          <th>Total Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        {venueItems.filter((i) => i.quantity > 0).map((i, idx) => (
+          <tr key={idx}>
+            <td>{i.name}</td>
+            <td>${i.cost}</td>
+            <td>{i.quantity}</td>
+            <td>${i.cost * i.quantity}</td>
+          </tr>
+        ))}
+        {addonItems.filter((i) => i.quantity > 0).map((i, idx) => (
+          <tr key={idx}>
+            <td>{i.name}</td>
+            <td>${i.cost}</td>
+            <td>{i.quantity}</td>
+            <td>${i.cost * i.quantity}</td>
+          </tr>
+        ))}
+        {mealsItems.filter((i) => i.selected).map((i, idx) => (
+          <tr key={idx}>
+            <td>{i.name}</td>
+            <td>${i.cost}</td>
+            <td>For {numberOfPeople} people</td>
+            <td>${i.cost * numberOfPeople}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 
   return (
     <div className="conference-container">
@@ -101,46 +141,7 @@ const ConferenceEvent = () => {
           </section>
         </div>
       ) : (
-        <div className="summary-container">
-          <h2>TOTAL COST FOR THE EVENT</h2>
-          <h1 className="grand-total">${grandTotal}</h1>
-          <table className="summary-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Unit Cost</th>
-                <th>Quantity</th>
-                <th>Total Cost</th>
-              </tr>
-            </thead>
-            <tbody>
-              {venueItems.filter((i) => i.quantity > 0).map((i, idx) => (
-                <tr key={idx}>
-                  <td>{i.name}</td>
-                  <td>${i.cost}</td>
-                  <td>{i.quantity}</td>
-                  <td>${i.cost * i.quantity}</td>
-                </tr>
-              ))}
-              {addonItems.filter((i) => i.quantity > 0).map((i, idx) => (
-                <tr key={idx}>
-                  <td>{i.name}</td>
-                  <td>${i.cost}</td>
-                  <td>{i.quantity}</td>
-                  <td>${i.cost * i.quantity}</td>
-                </tr>
-              ))}
-              {mealsItems.filter((i) => i.selected).map((i, idx) => (
-                <tr key={idx}>
-                  <td>{i.name}</td>
-                  <td>${i.cost}</td>
-                  <td>For {numberOfPeople} people</td>
-                  <td>${i.cost * numberOfPeople}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <TotalCost totalCosts={grandTotal} ItemsDisplay={ItemsDisplay} />
       )}
     </div>
   );
