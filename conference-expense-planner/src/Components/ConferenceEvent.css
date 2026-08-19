@@ -1,87 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap');
+
+:root {
+  --bg-color: #0a0a0c;
+  --card-bg: #11141a;
+  --text-main: #00ff66;
+  --text-dim: #70a382;
+  --accent-glow: #00ff66;
+  --accent-dark: #052914;
+  --border-neon: rgba(0, 255, 102, 0.3);
+  --border-neon-strong: #00ff66;
+  --danger-glow: #ff0055;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: 'Fira Code', monospace;
+  margin: 0;
+  padding: 0;
+}
+
 .conference-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
+/* Cyber Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #2c3e50;
+  background: rgba(17, 20, 26, 0.8);
+  border: 1px solid var(--border-neon);
+  box-shadow: 0 0 15px rgba(0, 255, 102, 0.15);
   padding: 15px 30px;
-  border-radius: 8px;
-  color: #fff;
+  border-radius: 4px;
   margin-bottom: 30px;
+  backdrop-filter: blur(5px);
 }
 
 .navbar-title {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-shadow: 0 0 8px var(--accent-glow);
+  letter-spacing: 1px;
 }
 
 .navbar-links a {
-  color: #fff;
+  color: var(--text-dim);
   text-decoration: none;
   margin: 0 15px;
-  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .navbar-links a:hover {
-  text-decoration: underline;
+  color: var(--text-main);
+  text-shadow: 0 0 8px var(--accent-glow);
 }
 
 .show-details-btn {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 5px;
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border-neon-strong);
+  padding: 10px 20px;
+  border-radius: 4px;
   cursor: pointer;
+  font-family: 'Fira Code', monospace;
   font-weight: bold;
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+  transition: all 0.3s ease;
 }
 
 .show-details-btn:hover {
-  background-color: #c0392b;
+  background: var(--accent-glow);
+  color: #000;
+  box-shadow: 0 0 20px var(--accent-glow);
 }
 
+/* Sections */
 .section {
   margin-bottom: 40px;
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 6px;
+  border: 1px solid var(--border-neon);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  animation: slideUp 0.6s ease-out;
 }
 
 .section-header {
-  border-bottom: 2px solid #2c3e50;
-  padding-bottom: 8px;
-  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-neon);
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+  color: var(--text-main);
+  text-shadow: 0 0 5px var(--accent-glow);
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
+/* Grid & Cards */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
 }
 
 .card {
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 15px;
+  background: #090c10;
+  border: 1px solid var(--border-neon);
+  border-radius: 4px;
+  padding: 20px;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px var(--border-neon-strong);
 }
 
 .price {
-  font-size: 1.2rem;
-  color: #27ae60;
+  font-size: 1.3rem;
+  color: var(--text-main);
   font-weight: bold;
+  text-shadow: 0 0 6px var(--accent-glow);
 }
 
+/* Controls */
 .quantity-controls {
   display: flex;
   justify-content: center;
@@ -91,85 +139,118 @@
 }
 
 .quantity-controls button {
-  background: #3498db;
-  color: white;
-  border: none;
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--text-main);
   width: 32px;
   height: 32px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
 }
 
 .quantity-controls button:hover {
-  background: #2980b9;
+  background: var(--text-main);
+  color: #000;
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .subtotal-box {
-  margin-top: 15px;
+  margin-top: 20px;
   text-align: right;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: bold;
-  color: #2c3e50;
+  color: var(--text-main);
+  text-shadow: 0 0 5px var(--accent-glow);
 }
 
+/* Meals & Inputs */
 .people-input-container {
   margin-bottom: 20px;
-  font-size: 1rem;
+  color: var(--text-dim);
 }
 
 .people-input-container input {
-  padding: 6px 10px;
-  width: 80px;
-  font-size: 1rem;
-  margin-left: 10px;
+  background: #000;
+  border: 1px solid var(--border-neon);
+  color: var(--text-main);
+  padding: 8px;
+  font-family: 'Fira Code', monospace;
+  border-radius: 4px;
+  outline: none;
+}
+
+.people-input-container input:focus {
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .meals-grid {
   display: flex;
-  gap: 25px;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
 .meal-card {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-  background: white;
-  padding: 10px 15px;
+  gap: 10px;
+  background: #090c10;
+  padding: 12px 20px;
+  border-radius: 4px;
+  border: 1px solid var(--border-neon);
+  accent-color: var(--text-main);
+}
+
+/* Summary Table */
+.display_box {
+  text-align: center;
+  background: var(--card-bg);
+  padding: 30px;
   border-radius: 6px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-neon-strong);
+  box-shadow: 0 0 30px rgba(0, 255, 102, 0.2);
+  animation: pulseGlow 3s infinite alternate;
 }
 
 .summary-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  background: white;
+  background: #090c10;
 }
 
 .summary-table th, .summary-table td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-neon);
   padding: 12px;
   text-align: left;
 }
 
 .summary-table th {
-  background-color: #34495e;
-  color: white;
-}
-
-.display_box {
-  text-align: center;
-  background: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background-color: var(--accent-dark);
+  color: var(--text-main);
+  text-transform: uppercase;
 }
 
 .heading {
-  font-size: 2.5rem;
-  color: #27ae60;
-  margin: 10px 0 20px 0;
+  font-size: 2.8rem;
+  color: var(--text-main);
+  text-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  from { box-shadow: 0 0 15px rgba(0, 255, 102, 0.1); }
+  to { box-shadow: 0 0 30px rgba(0, 255, 102, 0.3); }
 }
