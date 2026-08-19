@@ -1,70 +1,29 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { incrementQuantity, decrementQuantity } from '../redux/venueSlice';
+import { incrementAvQuantity, decrementAvQuantity } from '../redux/addonsSlice';
+import { toggleMealSelection } from '../redux/mealsSlice';
 import './ConferenceEvent.css';
 
 const ConferenceEvent = () => {
   const [showDetails, setShowDetails] = useState(false);
-
-  // Venue Rooms State
-  const [venueItems, setVenueItems] = useState([
-    { name: 'Conference Room (Capacity:15)', cost: 1500, quantity: 0 },
-    { name: 'Auditorium Hall (Capacity:200)', cost: 5500, quantity: 0 },
-    { name: 'Presentation Room (Capacity:50)', cost: 3500, quantity: 0 },
-    { name: 'Large Meeting Room (Capacity:10)', cost: 1000, quantity: 0 },
-    { name: 'Small Meeting Room (Capacity:5)', cost: 800, quantity: 0 },
-  ]);
-
-  // Add-ons State
-  const [addonItems, setAddonItems] = useState([
-    { name: 'Projectors', cost: 200, quantity: 0 },
-    { name: 'Speaker', cost: 35, quantity: 0 },
-    { name: 'Microphones', cost: 45, quantity: 0 },
-    { name: 'Whiteboards', cost: 80, quantity: 0 },
-    { name: 'Signage', cost: 80, quantity: 0 },
-  ]);
-
-  // Meals State
   const [numberOfPeople, setNumberOfPeople] = useState(1);
-  const [meals, setMeals] = useState([
-    { name: 'Breakfast', cost: 50, selected: false },
-    { name: 'High Tea', cost: 25, selected: false },
-    { name: 'Lunch', cost: 65, selected: false },
-    { name: 'Dinner', cost: 70, selected: false },
-  ]);
 
-  // Quantity Handlers
-  const handleVenueQuantityChange = (index, delta) => {
-    const updated = [...venueItems];
-    const newQty = updated[index].quantity + delta;
-    if (newQty >= 0) {
-      updated[index].quantity = newQty;
-      setVenueItems(updated);
-    }
-  };
+  const venueItems = useSelector((state) => state.venue);
+  const addonItems = useSelector((state) => state.addons);
+  const mealsItems = useSelector((state) => state.meals);
+  const dispatch = useDispatch();
 
-  const handleAddonQuantityChange = (index, delta) => {
-    const updated = [...addonItems];
-    const newQty = updated[index].quantity + delta;
-    if (newQty >= 0) {
-      updated[index].quantity = newQty;
-      setAddonItems(updated);
-    }
-  };
-
-  const handleMealChange = (index) => {
-    const updated = [...meals];
-    updated[index].selected = !updated[index].selected;
-    setMeals(updated);
-  };
-
-  // Subtotal Calculations
   const venueTotal = venueItems.reduce((sum, item) => sum + item.cost * item.quantity, 0);
   const addonTotal = addonItems.reduce((sum, item) => sum + item.cost * item.quantity, 0);
-  const mealsTotal = meals.reduce((sum, item) => item.selected ? sum + item.cost * numberOfPeople : sum, 0);
+  const mealsTotal = mealsItems.reduce(
+    (sum, item) => (item.selected ? sum + item.cost * numberOfPeople : sum),
+    0
+  );
   const grandTotal = venueTotal + addonTotal + mealsTotal;
 
   return (
     <div className="conference-container">
-      {/* Navigation Bar */}
       <nav className="navbar">
         <div className="navbar-title">Conference Expense Planner</div>
         <div className="navbar-links">
@@ -79,7 +38,6 @@ const ConferenceEvent = () => {
 
       {!showDetails ? (
         <div className="main-content">
-          {/* Section 1: Venue Selection */}
           <section id="venue" className="section">
             <h2 className="section-header">Venue Room Selection</h2>
             <div className="grid-container">
@@ -88,9 +46,9 @@ const ConferenceEvent = () => {
                   <h3>{item.name}</h3>
                   <p className="price">${item.cost}</p>
                   <div className="quantity-controls">
-                    <button onClick={() => handleVenueQuantityChange(index, -1)}>-</button>
+                    <button onClick={() => dispatch(decrementQuantity(index))}>-</button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => handleVenueQuantityChange(index, 1)}>+</button>
+                    <button onClick={() => dispatch(incrementQuantity(index))}>+</button>
                   </div>
                 </div>
               ))}
@@ -98,7 +56,6 @@ const ConferenceEvent = () => {
             <div className="subtotal-box">Total Cost: ${venueTotal}</div>
           </section>
 
-          {/* Section 2: Add-ons Selection */}
           <section id="addons" className="section">
             <h2 className="section-header">Add-ons Selection</h2>
             <div className="grid-container">
@@ -107,9 +64,9 @@ const ConferenceEvent = () => {
                   <h3>{item.name}</h3>
                   <p className="price">${item.cost}</p>
                   <div className="quantity-controls">
-                    <button onClick={() => handleAddonQuantityChange(index, -1)}>-</button>
+                    <button onClick={() => dispatch(decrementAvQuantity(index))}>-</button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => handleAddonQuantityChange(index, 1)}>+</button>
+                    <button onClick={() => dispatch(incrementAvQuantity(index))}>+</button>
                   </div>
                 </div>
               ))}
@@ -117,7 +74,6 @@ const ConferenceEvent = () => {
             <div className="subtotal-box">Total Cost: ${addonTotal}</div>
           </section>
 
-          {/* Section 3: Meals Selection */}
           <section id="meals" className="section">
             <h2 className="section-header">Meals Selection</h2>
             <div className="people-input-container">
@@ -130,12 +86,12 @@ const ConferenceEvent = () => {
               />
             </div>
             <div className="meals-grid">
-              {meals.map((item, index) => (
+              {mealsItems.map((item, index) => (
                 <div key={index} className="meal-card">
                   <input
                     type="checkbox"
                     checked={item.selected}
-                    onChange={() => handleMealChange(index)}
+                    onChange={() => dispatch(toggleMealSelection(index))}
                   />
                   <span>{item.name} (${item.cost})</span>
                 </div>
@@ -145,7 +101,6 @@ const ConferenceEvent = () => {
           </section>
         </div>
       ) : (
-        /* Pop-up Summary Table */
         <div className="summary-container">
           <h2>TOTAL COST FOR THE EVENT</h2>
           <h1 className="grand-total">${grandTotal}</h1>
@@ -159,7 +114,7 @@ const ConferenceEvent = () => {
               </tr>
             </thead>
             <tbody>
-              {venueItems.filter(i => i.quantity > 0).map((i, idx) => (
+              {venueItems.filter((i) => i.quantity > 0).map((i, idx) => (
                 <tr key={idx}>
                   <td>{i.name}</td>
                   <td>${i.cost}</td>
@@ -167,7 +122,7 @@ const ConferenceEvent = () => {
                   <td>${i.cost * i.quantity}</td>
                 </tr>
               ))}
-              {addonItems.filter(i => i.quantity > 0).map((i, idx) => (
+              {addonItems.filter((i) => i.quantity > 0).map((i, idx) => (
                 <tr key={idx}>
                   <td>{i.name}</td>
                   <td>${i.cost}</td>
@@ -175,7 +130,7 @@ const ConferenceEvent = () => {
                   <td>${i.cost * i.quantity}</td>
                 </tr>
               ))}
-              {meals.filter(i => i.selected).map((i, idx) => (
+              {mealsItems.filter((i) => i.selected).map((i, idx) => (
                 <tr key={idx}>
                   <td>{i.name}</td>
                   <td>${i.cost}</td>
