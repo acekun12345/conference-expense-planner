@@ -24,42 +24,44 @@ const ConferenceEvent = () => {
   const grandTotal = venueTotal + addonTotal + mealsTotal;
 
   const ItemsDisplay = () => (
-    <table className="summary-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Unit Cost</th>
-          <th>Quantity</th>
-          <th>Total Cost</th>
-        </tr>
-      </thead>
-      <tbody>
-        {venueItems.filter((i) => i.quantity > 0).map((i, idx) => (
-          <tr key={idx}>
-            <td>{i.name}</td>
-            <td>${i.cost}</td>
-            <td>{i.quantity}</td>
-            <td>${i.cost * i.quantity}</td>
+    <div className="table-responsive">
+      <table className="summary-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Unit Cost</th>
+            <th>Quantity</th>
+            <th>Total Cost</th>
           </tr>
-        ))}
-        {addonItems.filter((i) => i.quantity > 0).map((i, idx) => (
-          <tr key={idx}>
-            <td>{i.name}</td>
-            <td>${i.cost}</td>
-            <td>{i.quantity}</td>
-            <td>${i.cost * i.quantity}</td>
-          </tr>
-        ))}
-        {mealsItems.filter((i) => i.selected).map((i, idx) => (
-          <tr key={idx}>
-            <td>{i.name}</td>
-            <td>${i.cost}</td>
-            <td>For {numberOfPeople} people</td>
-            <td>${i.cost * numberOfPeople}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {venueItems.filter((i) => i.quantity > 0).map((i, idx) => (
+            <tr key={idx}>
+              <td>{i.name}</td>
+              <td>${i.cost}</td>
+              <td>{i.quantity}</td>
+              <td>${i.cost * i.quantity}</td>
+            </tr>
+          ))}
+          {addonItems.filter((i) => i.quantity > 0).map((i, idx) => (
+            <tr key={idx}>
+              <td>{i.name}</td>
+              <td>${i.cost}</td>
+              <td>{i.quantity}</td>
+              <td>${i.cost * i.quantity}</td>
+            </tr>
+          ))}
+          {mealsItems.filter((i) => i.selected).map((i, idx) => (
+            <tr key={idx}>
+              <td>{i.name}</td>
+              <td>${i.cost}</td>
+              <td>For {numberOfPeople} people</td>
+              <td>${i.cost * numberOfPeople}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 
   return (
