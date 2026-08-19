@@ -1,23 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
 
+/* Default Dark Theme (Cybersecurity) */
 :root {
   --bg-color: #0a0a0c;
   --card-bg: #11141a;
+  --inner-card-bg: #090c10;
   --text-main: #00ff66;
   --text-dim: #70a382;
   --accent-glow: #00ff66;
   --accent-dark: #052914;
   --border-neon: rgba(0, 255, 102, 0.3);
   --border-neon-strong: #00ff66;
-  --danger-glow: #ff0055;
+  --font-family: 'Fira Code', monospace;
+  --btn-hover-bg: #00ff66;
+  --btn-hover-text: #000;
+}
+
+/* Light Theme (Beach White/Blue) */
+[data-theme='light'] {
+  --bg-color: #e0f7fa;
+  --card-bg: #ffffff;
+  --inner-card-bg: #f0fdfd;
+  --text-main: #00695c;
+  --text-dim: #00897b;
+  --accent-glow: #00acc1;
+  --accent-dark: #b2ebf2;
+  --border-neon: rgba(0, 172, 193, 0.4);
+  --border-neon-strong: #00acc1;
+  --font-family: 'Poppins', sans-serif;
+  --btn-hover-bg: #00acc1;
+  --btn-hover-text: #fff;
 }
 
 body {
   background-color: var(--bg-color);
   color: var(--text-main);
-  font-family: 'Fira Code', monospace;
+  font-family: var(--font-family);
   margin: 0;
   padding: 0;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .conference-container {
@@ -27,81 +48,72 @@ body {
   animation: fadeIn 0.8s ease-in-out;
 }
 
-/* Cyber Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(17, 20, 26, 0.8);
+  background: var(--card-bg);
   border: 1px solid var(--border-neon);
-  box-shadow: 0 0 15px rgba(0, 255, 102, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   padding: 15px 30px;
-  border-radius: 4px;
+  border-radius: 8px;
   margin-bottom: 30px;
-  backdrop-filter: blur(5px);
+  transition: all 0.4s ease;
 }
 
 .navbar-title {
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-main);
-  text-shadow: 0 0 8px var(--accent-glow);
-  letter-spacing: 1px;
 }
 
 .navbar-links a {
   color: var(--text-dim);
   text-decoration: none;
   margin: 0 15px;
-  transition: all 0.3s ease;
+  font-weight: 600;
 }
 
-.navbar-links a:hover {
-  color: var(--text-main);
-  text-shadow: 0 0 8px var(--accent-glow);
+.nav-actions {
+  display: flex;
+  gap: 12px;
 }
 
-.show-details-btn {
+.theme-toggle-btn, .show-details-btn {
   background: transparent;
   color: var(--text-main);
   border: 1px solid var(--border-neon-strong);
-  padding: 10px 20px;
-  border-radius: 4px;
+  padding: 8px 16px;
+  border-radius: 6px;
   cursor: pointer;
-  font-family: 'Fira Code', monospace;
+  font-family: var(--font-family);
   font-weight: bold;
-  box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
   transition: all 0.3s ease;
 }
 
-.show-details-btn:hover {
-  background: var(--accent-glow);
-  color: #000;
-  box-shadow: 0 0 20px var(--accent-glow);
+.theme-toggle-btn:hover, .show-details-btn:hover {
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-text);
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
-/* Sections */
 .section {
   margin-bottom: 40px;
   background: var(--card-bg);
   padding: 25px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid var(--border-neon);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-  animation: slideUp 0.6s ease-out;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s ease;
 }
 
 .section-header {
-  border-bottom: 1px solid var(--border-neon);
+  border-bottom: 2px solid var(--border-neon);
   padding-bottom: 10px;
   margin-bottom: 25px;
   color: var(--text-main);
-  text-shadow: 0 0 5px var(--accent-glow);
-  text-transform: uppercase;
-  letter-spacing: 2px;
 }
 
-/* Grid & Cards */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -109,9 +121,9 @@ body {
 }
 
 .card {
-  background: #090c10;
+  background: var(--inner-card-bg);
   border: 1px solid var(--border-neon);
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 20px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -119,17 +131,15 @@ body {
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 0 15px var(--border-neon-strong);
+  box-shadow: 0 6px 15px var(--border-neon);
 }
 
 .price {
   font-size: 1.3rem;
   color: var(--text-main);
   font-weight: bold;
-  text-shadow: 0 0 6px var(--accent-glow);
 }
 
-/* Controls */
 .quantity-controls {
   display: flex;
   justify-content: center;
@@ -146,15 +156,14 @@ body {
   height: 32px;
   border-radius: 4px;
   cursor: pointer;
-  font-family: 'Fira Code', monospace;
+  font-family: var(--font-family);
   font-size: 1.2rem;
   transition: all 0.2s ease;
 }
 
 .quantity-controls button:hover {
-  background: var(--text-main);
-  color: #000;
-  box-shadow: 0 0 10px var(--accent-glow);
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-text);
 }
 
 .subtotal-box {
@@ -163,27 +172,21 @@ body {
   font-size: 1.2rem;
   font-weight: bold;
   color: var(--text-main);
-  text-shadow: 0 0 5px var(--accent-glow);
 }
 
-/* Meals & Inputs */
 .people-input-container {
   margin-bottom: 20px;
   color: var(--text-dim);
 }
 
 .people-input-container input {
-  background: #000;
+  background: var(--inner-card-bg);
   border: 1px solid var(--border-neon);
   color: var(--text-main);
   padding: 8px;
-  font-family: 'Fira Code', monospace;
+  font-family: var(--font-family);
   border-radius: 4px;
   outline: none;
-}
-
-.people-input-container input:focus {
-  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .meals-grid {
@@ -196,29 +199,26 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #090c10;
+  background: var(--inner-card-bg);
   padding: 12px 20px;
-  border-radius: 4px;
+  border-radius: 6px;
   border: 1px solid var(--border-neon);
-  accent-color: var(--text-main);
 }
 
-/* Summary Table */
 .display_box {
   text-align: center;
   background: var(--card-bg);
   padding: 30px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid var(--border-neon-strong);
-  box-shadow: 0 0 30px rgba(0, 255, 102, 0.2);
-  animation: pulseGlow 3s infinite alternate;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .summary-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  background: #090c10;
+  background: var(--inner-card-bg);
 }
 
 .summary-table th, .summary-table td {
@@ -230,27 +230,14 @@ body {
 .summary-table th {
   background-color: var(--accent-dark);
   color: var(--text-main);
-  text-transform: uppercase;
 }
 
 .heading {
   font-size: 2.8rem;
   color: var(--text-main);
-  text-shadow: 0 0 15px var(--accent-glow);
 }
 
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulseGlow {
-  from { box-shadow: 0 0 15px rgba(0, 255, 102, 0.1); }
-  to { box-shadow: 0 0 30px rgba(0, 255, 102, 0.3); }
 }

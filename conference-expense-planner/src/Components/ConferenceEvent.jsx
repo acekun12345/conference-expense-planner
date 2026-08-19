@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { incrementQuantity, decrementQuantity } from '../redux/venueSlice';
 import { incrementAvQuantity, decrementAvQuantity } from '../redux/addonsSlice';
@@ -9,11 +9,20 @@ import './ConferenceEvent.css';
 const ConferenceEvent = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [numberOfPeople, setNumberOfPeople] = useState(1);
+  const [theme, setTheme] = useState('dark');
 
   const venueItems = useSelector((state) => state.venue);
   const addonItems = useSelector((state) => state.addons);
   const mealsItems = useSelector((state) => state.meals);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
+  };
 
   const venueTotal = venueItems.reduce((sum, item) => sum + item.cost * item.quantity, 0);
   const addonTotal = addonItems.reduce((sum, item) => sum + item.cost * item.quantity, 0);
@@ -73,9 +82,14 @@ const ConferenceEvent = () => {
           <a href="#addons">Add-ons</a>
           <a href="#meals">Meals</a>
         </div>
-        <button className="show-details-btn" onClick={() => setShowDetails(!showDetails)}>
-          {showDetails ? 'Close Details' : 'Show Details'}
-        </button>
+        <div className="nav-actions">
+          <button className="theme-toggle-btn" onClick={toggleTheme}>
+            {theme === 'dark' ? '🌊 Beach Mode' : '💻 Cyber Mode'}
+          </button>
+          <button className="show-details-btn" onClick={() => setShowDetails(!showDetails)}>
+            {showDetails ? 'Close Details' : 'Show Details'}
+          </button>
+        </div>
       </nav>
 
       {!showDetails ? (
