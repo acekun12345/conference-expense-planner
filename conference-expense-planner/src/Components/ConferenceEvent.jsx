@@ -4,6 +4,7 @@ import { incrementQuantity, decrementQuantity } from '../redux/venueSlice';
 import { incrementAvQuantity, decrementAvQuantity } from '../redux/addonsSlice';
 import { toggleMealSelection } from '../redux/mealsSlice';
 import TotalCost from './TotalCost';
+import BackgroundCanvas from './BackgroundCanvas';
 import './ConferenceEvent.css';
 
 const ConferenceEvent = () => {
@@ -75,6 +76,9 @@ const ConferenceEvent = () => {
 
   return (
     <div className="conference-container">
+      {/* Dynamic Background Canvas (Matrix Rain / Waves) */}
+      <BackgroundCanvas theme={theme} />
+
       <nav className="navbar">
         <div className="navbar-title">Conference Expense Planner</div>
         <div className="navbar-links">
