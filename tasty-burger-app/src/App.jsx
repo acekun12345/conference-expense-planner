@@ -1,95 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Navbar from './components/Navbar';
+import BurgerCard from './components/BurgerCard';
 import './App.css';
 
-const burgerData = [
+const BURGER_DATA = [
   {
     id: 1,
     name: 'Crispy Chicken',
-    desc: 'Chicken breast, chilli sauce, tomatoes, pickles, coleslaw',
+    description: 'Juicy, breaded chicken burger with slaw in a brioche bun.',
     price: 99.15,
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?w=500&q=80',
+    rating: 4,
+    image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=600&q=80',
   },
   {
     id: 2,
     name: 'Ultimate Bacon',
-    desc: 'House patty, cheddar cheese, bacon, onion, mustard',
+    description: 'Double beef patty burger overflowing with pattern bacon.',
     price: 99.32,
     rating: 5,
-    image: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=600&q=80',
   },
   {
     id: 3,
     name: 'Black Sheep',
-    desc: 'American cheese, tomato relish, avocado, lettuce, red onion',
+    description: 'Unique lamb patty burger with avocado and red onion.',
     price: 69.15,
     rating: 4,
-    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80',
   },
   {
     id: 4,
     name: 'Vegan Burger',
-    desc: 'House patty, cheddar cheese, bacon, onion, mustard',
+    description: 'Plant-based patty burger with fresh toppings and hit more.',
     price: 99.25,
     rating: 4,
-    image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80',
   },
 ];
 
 function App() {
-  return (
-    <div className="burger-app">
-      <nav className="navbar">
-        <div className="logo-container">
-          <img 
-            src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" 
-            alt="Tasty Burger Logo" 
-            className="logo-img" 
-          />
-          <span className="logo-text">TASTY<br /><small>BURGER</small></span>
-        </div>
-        <ul className="nav-links">
-          <li><a href="#about">ABOUT</a></li>
-          <li><a href="#menu" className="active">OUR MENU</a></li>
-          <li><a href="#shop">SHOP</a></li>
-          <li><a href="#contact">CONTACT</a></li>
-          <li className="cart-icon">
-            🛒<span className="cart-badge">2</span>
-          </li>
-        </ul>
-      </nav>
+  const [activeTab, setActiveTab] = useState('OUR MENU');
+  const [cartItems, setCartItems] = useState([]);
 
-      <header className="hero">
+  const handleAddToCart = (burger) => {
+    setCartItems((prev) => [...prev, burger]);
+  };
+
+  const handleCartClick = () => {
+    alert(`Cart Items (${cartItems.length}):\n` + cartItems.map((i) => i.name).join('\n'));
+  };
+
+  return (
+    <div className="app-container">
+      <Navbar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        cartCount={cartItems.length}
+        onCartClick={handleCartClick}
+      />
+
+      <header className="hero-section">
         <h1>OUR CRAZY BURGERS</h1>
         <p>
-          Get ready for a wild ride of flavors! Our crazy burgers are loaded with juicy
-          patties, bold toppings, and irresistible sauces, all stacked on a perfectly toasted
-          bun. Whether you like it cheesy, or extra meaty, we've got a burger that will blow
-          your mind!
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam ton
+          euismod tincidunt ut labore et dolore magna aliqua.
         </p>
       </header>
 
-      <main className="burger-grid">
-        {burgerData.map((burger) => (
-          <div key={burger.id} className="burger-card">
-            <div className="card-image">
-              <img src={burger.image} alt={burger.name} />
-            </div>
-            <div className="card-body">
-              <div className="card-header-row">
-                <div className="stars">
-                  {'★'.repeat(burger.rating)}
-                  {'☆'.repeat(5 - burger.rating)}
-                </div>
-                <button className="wishlist-btn">♡</button>
-              </div>
-              <h3 className="burger-title">{burger.name}</h3>
-              <p className="burger-desc">{burger.desc}</p>
-              <div className="price-tag">
-                ৳{burger.price.toFixed(2)}
-              </div>
-            </div>
-          </div>
+      <main className="menu-grid">
+        {BURGER_DATA.map((burger) => (
+          <BurgerCard key={burger.id} burger={burger} onAddToCart={handleAddToCart} />
         ))}
       </main>
     </div>
