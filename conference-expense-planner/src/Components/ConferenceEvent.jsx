@@ -12,20 +12,16 @@ const ConferenceEvent = () => {
     const dispatch = useDispatch();
 
     const [numberOfPeople, setNumberOfPeople] = useState(1);
+    const [showModal, setShowModal] = useState(false);
 
     // Dynamic Total Cost Calculations
-    const calculateVenueTotal = () => {
-        return venueItems.reduce((total, item) => total + item.cost * item.quantity, 0);
-    };
-
-    const calculateAddonsTotal = () => {
-        return addonsItems.reduce((total, item) => total + item.cost * item.quantity, 0);
-    };
-
+    const calculateVenueTotal = () => venueItems.reduce((total, item) => total + item.cost * item.quantity, 0);
+    const calculateAddonsTotal = () => addonsItems.reduce((total, item) => total + item.cost * item.quantity, 0);
     const calculateMealsTotal = () => {
         const sumPerPerson = mealsItems.reduce((total, item) => item.selected ? total + item.cost : total, 0);
         return sumPerPerson * numberOfPeople;
     };
+    const calculateGrandTotal = () => calculateVenueTotal() + calculateAddonsTotal() + calculateMealsTotal();
 
     return (
         <div className="conference-app-wrapper">
@@ -36,7 +32,9 @@ const ConferenceEvent = () => {
                     <a href="#addons" className="nav-item">Add-ons</a>
                     <a href="#meals" className="nav-item">Meals</a>
                 </div>
-                <button className="show-details-btn">Show Details</button>
+                <button className="show-details-btn" onClick={() => setShowModal(true)}>
+                    Show Details
+                </button>
             </nav>
 
             <main className="content-area">
@@ -131,6 +129,62 @@ const ConferenceEvent = () => {
                     </div>
                 </section>
             </main>
+
+            {/* SHOW DETAILS MODAL */}
+            {showModal && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', zIndex: 1000
+                }}>
+                    <div style={{
+                        background: '#fff', padding: '30px', borderRadius: '12px',
+                        maxWidth: '500px', width: '90%', color: '#333', boxShadow: '0 5px 15px rgba(0,0,0,0.3)'
+                    }}>
+                        <h2 style={{ textAlign: 'center', marginBottom: '20px', color: '#1e293b' }}>Total Cost Details</h2>
+                        
+                        <div style={{ marginBottom: '15px' }}>
+                            <h3>Venue Items:</h3>
+                            {venueItems.filter(i => i.quantity > 0).map((i, idx) => (
+                                <p key={idx} style={{ margin: '4px 0' }}>• {i.name} x {i.quantity} = ${i.cost * i.quantity}</p>
+                            ))}
+                            <p><strong>Subtotal: ${calculateVenueTotal()}</strong></p>
+                        </div>
+
+                        <div style={{ marginBottom: '15px' }}>
+                            <h3>Add-ons:</h3>
+                            {addonsItems.filter(i => i.quantity > 0).map((i, idx) => (
+                                <p key={idx} style={{ margin: '4px 0' }}>• {i.name} x {i.quantity} = ${i.cost * i.quantity}</p>
+                            ))}
+                            <p><strong>Subtotal: ${calculateAddonsTotal()}</strong></p>
+                        </div>
+
+                        <div style={{ marginBottom: '15px' }}>
+                            <h3>Meals ({numberOfPeople} people):</h3>
+                            {mealsItems.filter(i => i.selected).map((i, idx) => (
+                                <p key={idx} style={{ margin: '4px 0' }}>• {i.name} = ${i.cost * numberOfPeople}</p>
+                            ))}
+                            <p><strong>Subtotal: ${calculateMealsTotal()}</strong></p>
+                        </div>
+
+                        <hr />
+                        <h2 style={{ textAlign: 'center', margin: '15px 0', color: '#2563eb' }}>
+                            Grand Total: ${calculateGrandTotal()}
+                        </h2>
+
+                        <button 
+                            onClick={() => setShowModal(false)}
+                            style={{
+                                width: '100%', padding: '10px', background: '#dc2626',
+                                color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer',
+                                fontWeight: 'bold', fontSize: '1rem'
+                            }}
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
