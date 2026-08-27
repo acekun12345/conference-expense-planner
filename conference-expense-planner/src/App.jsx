@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
-import LandingPage from './Components/LandingPage';
+import React from 'react';
 import ConferenceEvent from './Components/ConferenceEvent';
 import './App.css';
 
 function App() {
-  const [showProductSelection, setShowProductSelection] = useState(false);
-
   return (
-    <div className="App">
-      {!showProductSelection ? (
-        <LandingPage onGetStarted={() => setShowProductSelection(true)} />
-      ) : (
-        <ConferenceEvent />
-      )}
+    <div>
+      <ConferenceEvent />
     </div>
   );
 }

@@ -3,10 +3,12 @@ import venueReducer from './venueSlice';
 import addonsReducer from './addonsSlice';
 import mealsReducer from './mealsSlice';
 
-export default configureStore({
+export const store = configureStore({
   reducer: {
     venue: venueReducer,
     addons: addonsReducer,
     meals: mealsReducer,
   },
 });
+
+export default store;

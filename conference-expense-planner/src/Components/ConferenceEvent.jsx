@@ -1,170 +1,138 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import './ConferenceEvent.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { incrementQuantity, decrementQuantity } from '../redux/venueSlice';
 import { incrementAvQuantity, decrementAvQuantity } from '../redux/addonsSlice';
 import { toggleMealSelection } from '../redux/mealsSlice';
-import TotalCost from './TotalCost';
-import BackgroundCanvas from './BackgroundCanvas';
-import './ConferenceEvent.css';
 
 const ConferenceEvent = () => {
-  const [showDetails, setShowDetails] = useState(false);
-  const [numberOfPeople, setNumberOfPeople] = useState(1);
-  const [theme, setTheme] = useState('dark');
+    const venueItems = useSelector((state) => state.venue) || [];
+    const addonsItems = useSelector((state) => state.addons) || [];
+    const mealsItems = useSelector((state) => state.meals) || [];
+    const dispatch = useDispatch();
 
-  const venueItems = useSelector((state) => state.venue);
-  const addonItems = useSelector((state) => state.addons);
-  const mealsItems = useSelector((state) => state.meals);
-  const dispatch = useDispatch();
+    const [numberOfPeople, setNumberOfPeople] = useState(1);
 
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+    // Dynamic Total Cost Calculations
+    const calculateVenueTotal = () => {
+        return venueItems.reduce((total, item) => total + item.cost * item.quantity, 0);
+    };
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
-  };
+    const calculateAddonsTotal = () => {
+        return addonsItems.reduce((total, item) => total + item.cost * item.quantity, 0);
+    };
 
-  const venueTotal = venueItems.reduce((sum, item) => sum + item.cost * item.quantity, 0);
-  const addonTotal = addonItems.reduce((sum, item) => sum + item.cost * item.quantity, 0);
-  const mealsTotal = mealsItems.reduce(
-    (sum, item) => (item.selected ? sum + item.cost * numberOfPeople : sum),
-    0
-  );
-  const grandTotal = venueTotal + addonTotal + mealsTotal;
+    const calculateMealsTotal = () => {
+        const sumPerPerson = mealsItems.reduce((total, item) => item.selected ? total + item.cost : total, 0);
+        return sumPerPerson * numberOfPeople;
+    };
 
-  const ItemsDisplay = () => (
-    <div className="table-responsive">
-      <table className="summary-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Unit Cost</th>
-            <th>Quantity</th>
-            <th>Total Cost</th>
-          </tr>
-        </thead>
-        <tbody>
-          {venueItems.filter((i) => i.quantity > 0).map((i, idx) => (
-            <tr key={idx}>
-              <td>{i.name}</td>
-              <td>${i.cost}</td>
-              <td>{i.quantity}</td>
-              <td>${i.cost * i.quantity}</td>
-            </tr>
-          ))}
-          {addonItems.filter((i) => i.quantity > 0).map((i, idx) => (
-            <tr key={idx}>
-              <td>{i.name}</td>
-              <td>${i.cost}</td>
-              <td>{i.quantity}</td>
-              <td>${i.cost * i.quantity}</td>
-            </tr>
-          ))}
-          {mealsItems.filter((i) => i.selected).map((i, idx) => (
-            <tr key={idx}>
-              <td>{i.name}</td>
-              <td>${i.cost}</td>
-              <td>For {numberOfPeople} people</td>
-              <td>${i.cost * numberOfPeople}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-
-  return (
-    <div className="conference-container">
-      {/* Dynamic Background Canvas (Matrix Rain / Waves) */}
-      <BackgroundCanvas theme={theme} />
-
-      <nav className="navbar">
-        <div className="navbar-title">Conference Expense Planner</div>
-        <div className="navbar-links">
-          <a href="#venue">Venue</a>
-          <a href="#addons">Add-ons</a>
-          <a href="#meals">Meals</a>
-        </div>
-        <div className="nav-actions">
-          <button className="theme-toggle-btn" onClick={toggleTheme}>
-            {theme === 'dark' ? '🌊 Beach Mode' : '💻 Cyber Mode'}
-          </button>
-          <button className="show-details-btn" onClick={() => setShowDetails(!showDetails)}>
-            {showDetails ? 'Close Details' : 'Show Details'}
-          </button>
-        </div>
-      </nav>
-
-      {!showDetails ? (
-        <div className="main-content">
-          <section id="venue" className="section">
-            <h2 className="section-header">Venue Room Selection</h2>
-            <div className="grid-container">
-              {venueItems.map((item, index) => (
-                <div key={index} className="card">
-                  <h3>{item.name}</h3>
-                  <p className="price">${item.cost}</p>
-                  <div className="quantity-controls">
-                    <button onClick={() => dispatch(decrementQuantity(index))}>-</button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => dispatch(incrementQuantity(index))}>+</button>
-                  </div>
+    return (
+        <div className="conference-app-wrapper">
+            <nav className="top-navbar">
+                <h1 className="nav-title">Conference Expense Planner</h1>
+                <div className="nav-menu">
+                    <a href="#venue" className="nav-item">Venue</a>
+                    <a href="#addons" className="nav-item">Add-ons</a>
+                    <a href="#meals" className="nav-item">Meals</a>
                 </div>
-              ))}
-            </div>
-            <div className="subtotal-box">Total Cost: ${venueTotal}</div>
-          </section>
+                <button className="show-details-btn">Show Details</button>
+            </nav>
 
-          <section id="addons" className="section">
-            <h2 className="section-header">Add-ons Selection</h2>
-            <div className="grid-container">
-              {addonItems.map((item, index) => (
-                <div key={index} className="card">
-                  <h3>{item.name}</h3>
-                  <p className="price">${item.cost}</p>
-                  <div className="quantity-controls">
-                    <button onClick={() => dispatch(decrementAvQuantity(index))}>-</button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => dispatch(incrementAvQuantity(index))}>+</button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="subtotal-box">Total Cost: ${addonTotal}</div>
-          </section>
+            <main className="content-area">
+                {/* 1. ROOM SELECTION */}
+                <section id="venue" className="selection-section">
+                    <div className="section-header-banner">
+                        <h2>Venue Room Selection</h2>
+                    </div>
+                    <div className="card-grid">
+                        {venueItems.map((item, index) => (
+                            <div key={index} className="item-card">
+                                <div className="card-img-container">
+                                    <img src={item.img} alt={item.name} className="card-image" />
+                                </div>
+                                <h3 className="card-title">{item.name}</h3>
+                                <p className="card-subtitle">(Capacity:{item.capacity})</p>
+                                <p className="card-price">${item.cost}</p>
+                                <div className="counter-control">
+                                    <button className="counter-btn minus-btn" onClick={() => dispatch(decrementQuantity(index))}>-</button>
+                                    <span className="counter-val">{item.quantity}</span>
+                                    <button className="counter-btn plus-btn" onClick={() => dispatch(incrementQuantity(index))}>+</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="total-display">
+                        <span>Total Cost: ${calculateVenueTotal()}</span>
+                    </div>
+                </section>
 
-          <section id="meals" className="section">
-            <h2 className="section-header">Meals Selection</h2>
-            <div className="people-input-container">
-              <label>Number of People: </label>
-              <input
-                type="number"
-                min="1"
-                value={numberOfPeople}
-                onChange={(e) => setNumberOfPeople(Math.max(1, parseInt(e.target.value) || 1))}
-              />
-            </div>
-            <div className="meals-grid">
-              {mealsItems.map((item, index) => (
-                <div key={index} className="meal-card">
-                  <input
-                    type="checkbox"
-                    checked={item.selected}
-                    onChange={() => dispatch(toggleMealSelection(index))}
-                  />
-                  <span>{item.name} (${item.cost})</span>
-                </div>
-              ))}
-            </div>
-            <div className="subtotal-box">Total Cost: ${mealsTotal}</div>
-          </section>
+                {/* 2. ADD-ONS SELECTION */}
+                <section id="addons" className="selection-section" style={{ marginTop: '40px' }}>
+                    <div className="section-header-banner">
+                        <h2>Add-ons Selection</h2>
+                    </div>
+                    <div className="card-grid">
+                        {addonsItems.map((item, index) => (
+                            <div key={index} className="item-card">
+                                <div className="card-img-container">
+                                    <img src={item.img} alt={item.name} className="card-image" />
+                                </div>
+                                <h3 className="card-title">{item.name}</h3>
+                                <p className="card-price">${item.cost}</p>
+                                <div className="counter-control">
+                                    <button className="counter-btn minus-btn" onClick={() => dispatch(decrementAvQuantity(index))}>-</button>
+                                    <span className="counter-val">{item.quantity}</span>
+                                    <button className="counter-btn plus-btn" onClick={() => dispatch(incrementAvQuantity(index))}>+</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="total-display">
+                        <span>Total Cost: ${calculateAddonsTotal()}</span>
+                    </div>
+                </section>
+
+                {/* 3. MEALS SELECTION */}
+                <section id="meals" className="selection-section" style={{ marginTop: '40px' }}>
+                    <div className="section-header-banner">
+                        <h2>Meals Selection</h2>
+                    </div>
+                    <div className="meals-input-container" style={{ textAlign: 'center', margin: '20px 0' }}>
+                        <label style={{ fontSize: '1.2rem', fontWeight: 'bold', marginRight: '10px' }}>
+                            Number of People:
+                        </label>
+                        <input
+                            type="number"
+                            min="1"
+                            value={numberOfPeople}
+                            onChange={(e) => setNumberOfPeople(Math.max(1, parseInt(e.target.value) || 1))}
+                            style={{ padding: '8px', fontSize: '1rem', width: '80px', textAlign: 'center' }}
+                        />
+                    </div>
+                    <div className="meals-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '500px', margin: '0 auto' }}>
+                        {mealsItems.map((item, index) => (
+                            <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <input
+                                    type="checkbox"
+                                    id={`meal-${index}`}
+                                    checked={item.selected}
+                                    onChange={() => dispatch(toggleMealSelection(index))}
+                                    style={{ width: '20px', height: '20px' }}
+                                />
+                                <label htmlFor={`meal-${index}`} style={{ fontSize: '1.1rem' }}>
+                                    <strong>{item.name}</strong> <br /> ${item.cost}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="total-display" style={{ marginTop: '20px' }}>
+                        <span>Total Cost: ${calculateMealsTotal()}</span>
+                    </div>
+                </section>
+            </main>
         </div>
-      ) : (
-        <TotalCost totalCosts={grandTotal} ItemsDisplay={ItemsDisplay} />
-      )}
-    </div>
-  );
+    );
 };
 
 export default ConferenceEvent;
