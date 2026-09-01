@@ -11,10 +11,11 @@ export interface BurgerItem {
 
 interface BurgerCardProps {
   item: BurgerItem;
+  index: number;
   onAddToCart: (item: BurgerItem, quantity: number) => void;
 }
 
-const BurgerCard: React.FC<BurgerCardProps> = ({ item, onAddToCart }) => {
+const BurgerCard: React.FC<BurgerCardProps> = ({ item, index, onAddToCart }) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [quantity, setQuantity] = useState<number>(0);
@@ -44,14 +45,14 @@ const BurgerCard: React.FC<BurgerCardProps> = ({ item, onAddToCart }) => {
         border: '1px solid #e5e7eb',
         backgroundColor: '#ffffff',
         boxShadow: isHovered ? '0 10px 15px -3px rgba(0,0,0,0.1)' : '0 2px 4px rgba(0,0,0,0.05)',
-        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
-        transition: 'all 0.2s ease-in-out',
+        transform: isHovered ? 'translateY(-6px)' : 'translateY(0)',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
         display: 'flex',
         flexDirection: 'column',
-        fontFamily: 'sans-serif'
+        fontFamily: 'sans-serif',
+        animation: `cardPopUp 0.5s ease-out ${index * 0.1}s both`
       }}
     >
-      {/* Burger Image */}
       <div style={{ overflow: 'hidden', height: '170px' }}>
         <img 
           src={item.image} 
@@ -66,7 +67,6 @@ const BurgerCard: React.FC<BurgerCardProps> = ({ item, onAddToCart }) => {
         />
       </div>
 
-      {/* Card Content */}
       <div style={{ padding: '15px', display: 'flex', flexDirection: 'column', gap: '8px', flexGrow: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ color: '#f59e0b', fontSize: '14px' }}>
@@ -93,7 +93,6 @@ const BurgerCard: React.FC<BurgerCardProps> = ({ item, onAddToCart }) => {
           {item.description}
         </p>
 
-        {/* Price Tag */}
         <div style={{ marginTop: '5px' }}>
           <span style={{
             backgroundColor: '#4a2c20',
@@ -108,7 +107,6 @@ const BurgerCard: React.FC<BurgerCardProps> = ({ item, onAddToCart }) => {
           </span>
         </div>
 
-        {/* Quantity Controls: [- 0 +] and Add Button */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', gap: '8px' }}>
           <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #d1d5db', borderRadius: '6px', overflow: 'hidden' }}>
             <button

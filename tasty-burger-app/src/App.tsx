@@ -94,8 +94,13 @@ const App: React.FC = () => {
           </p>
 
           <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            {burgers.map((burger) => (
-              <BurgerCard key={burger.id} item={burger} onAddToCart={handleAddToCart} />
+            {burgers.map((burger, index) => (
+              <BurgerCard 
+                key={burger.id} 
+                item={burger} 
+                index={index} 
+                onAddToCart={handleAddToCart} 
+              />
             ))}
           </div>
         </div>
