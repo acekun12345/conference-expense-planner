@@ -1,14 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import venueReducer from './venueSlice';
+import venuesReducer from './venueSlice';
 import addonsReducer from './addonsSlice';
 import mealsReducer from './mealsSlice';
 
 export const store = configureStore({
   reducer: {
-    venue: venueReducer,
+    venues: venuesReducer,
     addons: addonsReducer,
     meals: mealsReducer,
   },
 });
 
-export default store;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
