@@ -11,12 +11,27 @@ export interface BurgerItem {
 
 interface BurgerCardProps {
   item: BurgerItem;
-  onAddToCart: (item: BurgerItem) => void;
+  onAddToCart: (item: BurgerItem, quantity: number) => void;
 }
 
 const BurgerCard: React.FC<BurgerCardProps> = ({ item, onAddToCart }) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [quantity, setQuantity] = useState<number>(0);
+
+  const handleIncrement = () => {
+    setQuantity((prev) => prev + 1);
+  };
+
+  const handleDecrement = () => {
+    setQuantity((prev) => (prev > 0 ? prev - 1 : 0));
+  };
+
+  const handleAdd = () => {
+    if (quantity > 0) {
+      onAddToCart(item, quantity);
+    }
+  };
 
   return (
     <div 
@@ -51,7 +66,7 @@ const BurgerCard: React.FC<BurgerCardProps> = ({ item, onAddToCart }) => {
         />
       </div>
 
-      {/* Card Body */}
+      {/* Card Content */}
       <div style={{ padding: '15px', display: 'flex', flexDirection: 'column', gap: '8px', flexGrow: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ color: '#f59e0b', fontSize: '14px' }}>
@@ -78,33 +93,74 @@ const BurgerCard: React.FC<BurgerCardProps> = ({ item, onAddToCart }) => {
           {item.description}
         </p>
 
-        <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* Price Tag */}
+        <div style={{ marginTop: '5px' }}>
           <span style={{
             backgroundColor: '#4a2c20',
             color: '#facc15',
             padding: '4px 10px',
             borderRadius: '6px',
             fontSize: '12px',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            display: 'inline-block'
           }}>
             ৳{item.price.toFixed(2)}
           </span>
+        </div>
+
+        {/* Quantity Controls: [- 0 +] and Add Button */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #d1d5db', borderRadius: '6px', overflow: 'hidden' }}>
+            <button
+              onClick={handleDecrement}
+              style={{
+                backgroundColor: '#f3f4f6',
+                border: 'none',
+                padding: '4px 10px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: '14px',
+                color: '#374151'
+              }}
+            >
+              -
+            </button>
+            <span style={{ padding: '4px 10px', fontSize: '13px', fontWeight: 'bold', color: '#111827', minWidth: '16px', textAlign: 'center' }}>
+              {quantity}
+            </span>
+            <button
+              onClick={handleIncrement}
+              style={{
+                backgroundColor: '#f3f4f6',
+                border: 'none',
+                padding: '4px 10px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: '14px',
+                color: '#374151'
+              }}
+            >
+              +
+            </button>
+          </div>
 
           <button
-            onClick={() => onAddToCart(item)}
+            onClick={handleAdd}
+            disabled={quantity === 0}
             style={{
-              backgroundColor: '#dc2626',
+              backgroundColor: quantity > 0 ? '#dc2626' : '#9ca3af',
               color: '#ffffff',
               border: 'none',
               padding: '6px 12px',
               borderRadius: '6px',
               fontSize: '12px',
               fontWeight: 'bold',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
+              cursor: quantity > 0 ? 'pointer' : 'not-allowed',
+              transition: 'background-color 0.2s',
+              flexGrow: 1
             }}
           >
-            + Add
+            Add to Cart
           </button>
         </div>
       </div>

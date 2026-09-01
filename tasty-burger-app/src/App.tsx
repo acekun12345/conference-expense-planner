@@ -47,15 +47,17 @@ const App: React.FC = () => {
     },
   ];
 
-  const handleAddToCart = (burger: BurgerItem) => {
+  const handleAddToCart = (burger: BurgerItem, selectedQuantity: number) => {
     setCartItems((prev) => {
       const existing = prev.find((entry) => entry.item.id === burger.id);
       if (existing) {
         return prev.map((entry) =>
-          entry.item.id === burger.id ? { ...entry, quantity: entry.quantity + 1 } : entry
+          entry.item.id === burger.id
+            ? { ...entry, quantity: entry.quantity + selectedQuantity }
+            : entry
         );
       }
-      return [...prev, { item: burger, quantity: 1 }];
+      return [...prev, { item: burger, quantity: selectedQuantity }];
     });
   };
 
@@ -77,7 +79,6 @@ const App: React.FC = () => {
         onNavigate={scrollToSection}
       />
 
-      {/* Main Container */}
       <main style={{ maxWidth: '1100px', margin: '0 auto', padding: '40px 20px', textAlign: 'center' }}>
         
         {/* Menu Section */}
@@ -107,14 +108,15 @@ const App: React.FC = () => {
           </p>
         </section>
 
-        {/* Contact Section */}
+        {/* Contact Section with CEO Info */}
         <section id="contact-section" style={{ marginTop: '50px', padding: '40px 20px', borderTop: '1px solid #e5e7eb' }}>
           <h2 style={{ color: '#111827', fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>CONTACT US</h2>
-          <p style={{ color: '#6b7280', fontSize: '14px' }}>Email: support@tastyburger.com | Phone: (02) 8888-BURGER</p>
+          <p style={{ color: '#dc2626', fontSize: '16px', fontWeight: 'bold', margin: '5px 0' }}>CEO : ACE ESTRABELA</p>
+          <p style={{ color: '#6b7280', fontSize: '14px', margin: '5px 0' }}>Email: support@tastyburger.com | Phone: (02) 8888-BURGER</p>
         </section>
       </main>
 
-      {/* Cart Side Drawer Modal */}
+      {/* Cart Drawer Modal */}
       {isCartOpen && (
         <div style={{
           position: 'fixed',
@@ -159,7 +161,7 @@ const App: React.FC = () => {
               )}
             </div>
 
-            <div style={{ borderTop: '1px solid #e5e7eb', pt: '15px', paddingTop: '15px' }}>
+            <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '15px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px', fontWeight: 'bold', fontSize: '16px' }}>
                 <span>Total:</span>
                 <span style={{ color: '#dc2626' }}>৳{totalPrice.toFixed(2)}</span>
