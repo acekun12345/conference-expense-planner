@@ -1,59 +1,64 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import BurgerCard, { BurgerItem } from './components/BurgerCard';
-import heroImg from './assets/hero.png';
 import './App.css';
 
 const App: React.FC = () => {
-  const burgerList: BurgerItem[] = [
+  const burgers: BurgerItem[] = [
     {
       id: 1,
-      name: 'Classic Cheeseburger',
-      price: 8.99,
-      description: 'Juicy beef patty with melt-in-your-mouth cheddar cheese.',
-      image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80',
+      name: 'Crispy Chicken',
+      price: 99.15,
+      rating: 5,
+      description: 'Chicken breast, chilli sauce, tomatoes, pickles, coleslaw',
+      image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=500&q=80',
     },
     {
       id: 2,
-      name: 'Bacon Deluxe Burger',
-      price: 10.99,
-      description: 'Crispy bacon, prime beef, and house special sauce.',
+      name: 'Ultimate Bacon',
+      price: 99.32,
+      rating: 5,
+      description: 'House patty, cheddar cheese, bacon, onion, mustard',
       image: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=500&q=80',
     },
     {
       id: 3,
-      name: 'Double Veggie Burger',
-      price: 7.99,
-      description: 'Loaded double plant-based patty with fresh greens.',
+      name: 'Black Sheep',
+      price: 69.15,
+      rating: 4,
+      description: 'American cheese, tomato relish, avocado, lettuce, red onion',
+      image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80',
+    },
+    {
+      id: 4,
+      name: 'Vegan Burger',
+      price: 99.25,
+      rating: 4,
+      description: 'House patty, cheddar cheese, bacon, onion, mustard',
       image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=500&q=80',
     },
   ];
 
-  const handleAddToCart = (item: BurgerItem) => {
-    console.log('Added to cart:', item);
-  };
-
   return (
-    <div className="app-container" style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
-      <Navbar cartCount={0} />
+    <div style={{ minHeight: '100vh', backgroundColor: '#ffffff', fontFamily: 'sans-serif' }}>
+      <Navbar cartCount={2} />
 
-      {/* Hero Section */}
-      <header style={{ textAlign: 'center', padding: '40px 20px', backgroundColor: '#fff', borderBottom: '1px solid #e2e8f0' }}>
-        <img 
-          src={heroImg} 
-          alt="Tasty Burger Hero" 
-          style={{ maxWidth: '400px', width: '100%', height: 'auto', borderRadius: '12px', marginBottom: '15px' }} 
-        />
-        <h1 style={{ fontSize: '2.5rem', color: '#0f172a', margin: '10px 0' }}>Welcome to Tasty Burger</h1>
-        <p style={{ color: '#64748b', fontSize: '1.1rem' }}>The best handcrafted burgers in town!</p>
-      </header>
+      <main style={{ maxWidth: '1100px', margin: '0 auto', padding: '40px 20px', textAlign: 'center' }}>
+        {/* Header Section */}
+        <h1 style={{ color: '#d97706', fontSize: '36px', fontWeight: '900', letterSpacing: '1px', margin: '0 0 15px 0' }}>
+          OUR CRAZY BURGERS
+        </h1>
+        <p style={{ color: '#6b7280', maxWidth: '650px', margin: '0 auto 40px auto', fontSize: '14px', lineHeight: '1.6' }}>
+          Get ready for a wild ride of flavors! Our crazy burgers are loaded with juicy
+          patties, bold toppings, and irresistible sauces, all stacked on a perfectly toasted
+          bun. Whether you like it cheesy, or extra meaty, we've got a burger that will blow
+          your mind!
+        </p>
 
-      {/* Menu Cards Section */}
-      <main style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#1e293b' }}>Our Special Menu</h2>
-        <div style={{ display: 'flex', gap: '25px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          {burgerList.map((burger) => (
-            <BurgerCard key={burger.id} item={burger} onAddToCart={handleAddToCart} />
+        {/* 4 Cards Grid */}
+        <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          {burgers.map((burger) => (
+            <BurgerCard key={burger.id} item={burger} />
           ))}
         </div>
       </main>
