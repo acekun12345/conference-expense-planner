@@ -156,4 +156,59 @@
   font-size: 1.2rem;
   font-weight: bold;
   color: #38bdf8;
+} .meals-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.people-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.people-input-container input {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background-color: #0f172a;
+  color: #fff;
+  font-size: 1rem;
+  width: 80px;
+}
+
+.meals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.meal-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #0f172a;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid #334155;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.meal-checkbox-label:hover {
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+.meal-checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #38bdf8;
+  cursor: pointer;
 }
